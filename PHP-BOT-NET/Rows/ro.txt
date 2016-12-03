@@ -1,0 +1,1 @@
+{"domaine":"localhost","ip":"::1","link":"http:\/\/localhost\/m\/bot.php","cn":"ma","path":"\/Applications\/MAMP\/htdocs\/m\/bot.php","os":"Darwin","php":"5.6.10","python":true,"kernel":"x86_6","socket":true,"cmd":true,"action":"DECLARE","key":"kU$^{VgUq`XBOaO\/G\/JLgxZmtRnGFFj#","id":1}

